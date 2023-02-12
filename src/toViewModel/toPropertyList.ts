@@ -6,7 +6,12 @@ const toPropertyList = (res: GetPropertiesResponse): Property[] => {
     return {
       id: property.id,
       name: property.name,
+      description: property.description,
+      rentalPeriod: property.rental_period,
+      price: property.price,
       isPurchasable: property.is_purchasable,
+      status: property.status,
+      imageUrl: property.image_url ?? undefined,
     };
   });
 

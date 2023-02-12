@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
-import getProperties from "../../repositories/getProperties";
-import toPropertyList from "@/toViewModel/toPropertyList";
 import { Property } from "@/type/viewModel/common/property";
-import { useRouter } from "next/router";
+import toProperty from "../../toViewModel/toProperty";
+import getProperty from "@/repositories/getProperty";
 
 type INIT = undefined;
 
@@ -11,7 +10,7 @@ type LOADING = { status: "loading" };
 
 type LOADED = {
   status: "loaded";
-  data: Property[];
+  data: Property;
 };
 
 type ERROR = {
@@ -23,13 +22,11 @@ type PropertyState = INIT | LOADING | LOADED | ERROR;
 
 type HookState = {
   propertyState: PropertyState;
-  toPropertyDetail: (propertyId: number) => void;
 };
 
-const usePropertiesPage = (): HookState => {
+const usePropertyPage = (propertyId: number): HookState => {
   const [propertyState, setPropertyState] = useState<PropertyState>(undefined);
-  const router = useRouter();
-  const { data, error } = useSWR("properties", getProperties);
+  const { data, error } = useSWR(`properties/${propertyId}`, getProperty);
 
   useEffect(() => {
     if (!data) {
@@ -47,22 +44,14 @@ const usePropertiesPage = (): HookState => {
     if (data) {
       setPropertyState({
         status: "loaded",
-        data: toPropertyList(data),
+        data: toProperty(data),
       });
     }
   }, [data]);
-
-  const toPropertyDetail = (propertyId: number) => {
-    router.push({
-      pathname: "/properties/show",
-      query: { propertyId: propertyId },
-    });
-  };
-
+  
   return {
     propertyState,
-    toPropertyDetail,
   };
 };
 
-export default usePropertiesPage;
+export default usePropertyPage;

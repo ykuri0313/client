@@ -1,10 +1,7 @@
-export type Property = {
-  id: number;
+export type PropertyCreateForm = {
   name: string;
   description: string;
   rentalPeriod: number;
   price: number;
   isPurchasable: boolean;
-  status: string;
-  imageUrl: string | undefined;
 };

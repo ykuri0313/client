@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
-import getProperties from "../../repositories/getProperties";
 import toPropertyList from "@/toViewModel/toPropertyList";
 import { Property } from "@/type/viewModel/common/property";
 import { useRouter } from "next/router";
+import getCloset from "@/repositories/getCloset";
+import { useToast } from "@chakra-ui/react";
 
 type INIT = undefined;
 
@@ -19,50 +20,52 @@ type ERROR = {
   info: string;
 };
 
-type PropertyState = INIT | LOADING | LOADED | ERROR;
+type ClosetState = INIT | LOADING | LOADED | ERROR;
 
 type HookState = {
-  propertyState: PropertyState;
-  toPropertyDetail: (propertyId: number) => void;
+  closetState: ClosetState;
+  toPropertyEdit: (propertyId: number) => void;
 };
 
-const usePropertiesPage = (): HookState => {
-  const [propertyState, setPropertyState] = useState<PropertyState>(undefined);
+const useClosetPage = (): HookState => {
+  const [closetState, setClosetState] = useState<ClosetState>(undefined);
   const router = useRouter();
-  const { data, error } = useSWR("properties", getProperties);
+  const toast = useToast();
+  const { data, error } = useSWR("/api/v1/properties/closet", getCloset);
 
   useEffect(() => {
     if (!data) {
-      setPropertyState({
+      setClosetState({
         status: "loading",
       });
     }
     if (error) {
       console.error(error);
-      setPropertyState({
+      setClosetState({
         status: "error",
         info: error,
       });
     }
     if (data) {
-      setPropertyState({
+      setClosetState({
         status: "loaded",
         data: toPropertyList(data),
       });
     }
   }, [data]);
 
-  const toPropertyDetail = (propertyId: number) => {
-    router.push({
-      pathname: "/properties/show",
-      query: { propertyId: propertyId },
+  const toPropertyEdit = (propertyId: number) => {
+    toast({
+      title: "編集機能は目下作成中です。今しばらくお待ちください！",
+      status: "warning",
+      position: "top",
     });
   };
 
   return {
-    propertyState,
-    toPropertyDetail,
+    closetState,
+    toPropertyEdit,
   };
 };
 
-export default usePropertiesPage;
+export default useClosetPage;
