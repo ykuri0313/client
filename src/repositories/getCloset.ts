@@ -6,12 +6,12 @@ const httpClient = new HttpClient({
   baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
 });
 
-const getProperties = async (url: string): Promise<GetPropertiesResponse> => {
+const getCloset = async (): Promise<GetPropertiesResponse> => {
   let data: unknown;
   try {
     await httpClient
       .request<GetPropertiesResponse>({
-        url: url,
+        url: `properties/closet`,
       })
       .then((res) => {
         data = res.data;
@@ -32,4 +32,4 @@ const getProperties = async (url: string): Promise<GetPropertiesResponse> => {
   return parsed;
 };
 
-export default getProperties;
+export default getCloset;

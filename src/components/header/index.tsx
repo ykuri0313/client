@@ -68,7 +68,7 @@ export const Header = () => {
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
           >
-            AnimeCloud
+            Renta
           </Text>
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
@@ -90,7 +90,7 @@ export const Header = () => {
                 variant={"link"}
                 href={"/signin"}
               >
-                Sign In
+                サインイン
               </Button>
               <Button
                 as={"a"}
@@ -99,20 +99,31 @@ export const Header = () => {
                 variant={"link"}
                 href={"/signup"}
               >
-                Sign Up
+                サインアップ
               </Button>
             </>
           ) : (
-            <Menu>
-              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                {user.email}
-              </MenuButton>
-              <MenuList>
-                <MenuItem as={Button} onClick={handleSignOut}>
-                  Sign Out
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <>
+              <Button
+                as={"a"}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                href={"/closet"}
+              >
+                クローゼット
+              </Button>
+              <Menu>
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                  {user.email}
+                </MenuButton>
+                <MenuList>
+                  <MenuItem as={Button} onClick={handleSignOut}>
+                    サインアウト
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </>
           )}
         </Stack>
       </Flex>
@@ -286,11 +297,11 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: "Chat",
-    href: "#",
+    label: "出品一覧",
+    href: "/properties",
   },
   {
-    label: "Post",
-    href: "#",
+    label: "出品してみる",
+    href: "/properties/create",
   },
 ];

@@ -5,24 +5,44 @@ import {
   Heading,
   Image,
   Text,
+  Flex,
+  Spacer,
+  Link,
 } from "@chakra-ui/react";
 import React from "react";
 
-const PropertyCard = () => {
+type Props = {
+  propertyId: number;
+  propertyName: string;
+  isPurchasable: boolean;
+  imageUrl: string | undefined;
+  toPropertyDetail: (propertyId: number) => void;
+};
+
+const PropertyCard = ({
+  propertyId,
+  propertyName,
+  isPurchasable,
+  imageUrl,
+  toPropertyDetail,
+}: Props) => {
   return (
-    <Card maxW="sm" variant="outline" mt="3" ml="3">
+    <Card
+      maxW="sm"
+      variant="outline"
+      mt="3"
+      mx="2"
+      onClick={() => {
+        toPropertyDetail(propertyId);
+      }}
+    >
       <CardBody>
-        <Image
-          src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-          alt="Green double couch with wooden legs"
-          borderRadius="lg"
-        />
-        <Stack mt="6" spacing="3">
-          <Heading size="md">Living room Sofa</Heading>
-          <Text color="blue.600" fontSize="2xl">
-            $450
-          </Text>
-        </Stack>
+        <Image alt={imageUrl} src={imageUrl} borderRadius="lg" />
+        <Flex mt="6">
+          <Heading size="md">{propertyName}</Heading>
+          <Spacer />
+          {isPurchasable && <Text>買取可能</Text>}
+        </Flex>
       </CardBody>
     </Card>
   );
